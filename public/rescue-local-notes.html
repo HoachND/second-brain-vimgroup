@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Cứu hộ Local Notes</title>
+  <style>
+    body { font-family: monospace; padding: 2rem; background: #1a1a1a; color: #fff; line-height: 1.6; }
+    button { padding: 8px 16px; margin: 10px 0; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #0056b3; }
+    pre { background: #2a2a2a; padding: 1rem; border-radius: 4px; overflow: auto; max-height: 400px; }
+  </style>
+</head>
+<body>
+  <h1>Rescue Local Notes</h1>
+  <p>Đây là trang hỗ trợ trích xuất dữ liệu đang được lưu trong trình duyệt (localStorage) để chuẩn bị cho quá trình chuyển đổi sang cơ sở dữ liệu mới (Supabase).</p>
+  
+  <div id="status">Đang quét...</div>
+  <button id="downloadBtn" style="display:none">Tải xuống netlify_notes.json</button>
+  
+  <pre id="output"></pre>
+
+  <script>
+    const KEY = 'second_brain_notes';
+    let notes = [];
+    
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (raw) {
+        notes = JSON.parse(raw);
+        document.getElementById('status').innerText = `Đã tìm thấy ${notes.length} notes trong trình duyệt.`;
+        document.getElementById('output').innerText = JSON.stringify(notes, null, 2);
+        
+        if (notes.length > 0) {
+          const btn = document.getElementById('downloadBtn');
+          btn.style.display = 'inline-block';
+          btn.onclick = () => {
+            const blob = new Blob([JSON.stringify(notes, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'netlify_notes.json';
+            a.click();
+            URL.revokeObjectURL(url);
+          };
+        }
+      } else {
+        document.getElementById('status').innerText = 'Không tìm thấy dữ liệu nào (second_brain_notes rỗng).';
+      }
+    } catch (e) {
+      document.getElementById('status').innerText = 'Lỗi khi đọc dữ liệu: ' + e.message;
+    }
+  </script>
+</body>
+</html>

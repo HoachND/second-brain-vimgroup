@@ -1,0 +1,54 @@
+redirectsOrigin = "config"
+plugins = []
+functionsDirectory = "/home/openclaw/.openclaw/workspace/second-brain/functions"
+functionsDirectoryOrigin = "config-v1"
+headers = []
+
+[functions]
+
+[functions."*"]
+node_bundler = "esbuild"
+
+[build]
+publish = "/home/openclaw/.openclaw/workspace/second-brain/public"
+publishOrigin = "config"
+base = "/home/openclaw/.openclaw/workspace/second-brain"
+functions = "/home/openclaw/.openclaw/workspace/second-brain/functions"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[[redirects]]
+from = "/api/*"
+to = "/.netlify/functions/:splat"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"/>
+<title>Second‑Brain V2</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:0;background:#f7fafc;color:#2d3748}
+.main{max-width:800px;margin:2rem auto;padding:1rem;background:#fff;box-shadow:0 4px 8px rgba(0,0,0,.1);border-radius:8px}
+.note{border-bottom:1px solid #e2e8f0;padding:1rem 0}
+.note:last-child{border:0}
+.note h2{margin:0 0 .5rem}
+.note p{margin:0}
+button{padding:.5rem 1rem;background:#3182ce;color:#fff;border:none;border-radius:4px;cursor:pointer}
+button+button{margin-left:.5rem}
+form{margin-top:1rem}
+form input,form textarea{width:100%;padding:.5rem;margin-bottom:.5rem;border:1px solid #cbd5e0;border-radius:4px;background:#fff}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div class="main">
+<h1>Second Brain</h1>
+<form id="form">
+  <input type="hidden" id="id"/>
+  <input type="text" id="title" placeholder="Title" required/>
+  <textarea id="content" placeholder="Content" required></textarea>
+  <button type="submit">Save</button>
+</form>
+<div id="list"></div>
+</div>
+
+<script>
+const SUPABASE_URL='https://auzjhytjiatvnbprmacu.supabase.co';
+const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1empoeXRqaWF0dm5icHJtYWN1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3NjUyNjksImV4cCI6MjA4MzM0MTI2OX0.y4ihcH-wccJ-wVU2hECV51Iu4PZai5BDdT1MUDxtJZE';
+const supabase=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+let notes=[];
+async function load(){ const {data}=await supabase.from('notes').select('*'); notes=data||[]; render(); }
+async function upsert(note){ await supabase.from('notes').upsert(note); }
+function render(){ const el=document.getElementById('list'); el.innerHTML=''; notes.forEach(n=>{ const div=document.createElement('div'); div.className='note'; div.innerHTML='<h2>'+n.title+'</h2><p>'+n.content+'</p><button onclick="edit(\''+n.id+'\')">Edit</button> <button onclick="del(\''+n.id+'\')">Del</button>'; el.appendChild(div); }); }
+function edit(id){ const n=notes.find(x=>x.id===id); if(!n) return; document.getElementById('id').value=id; document.getElementById('title').value=n.title; document.getElementById('content').value=n.content; }
+async function del(id){ if(!confirm('Delete?')) return; await supabase.from('notes').delete().eq('id',id); notes=notes.filter(n=>n.id!==id); render(); }
+document.getElementById('form').onsubmit=function(e){ e.preventDefault(); const id=document.getElementById('id').value; const title=document.getElementById('title').value; const content=document.getElementById('content').value; if(!title||!content) return; const note={id:id||'n'+Date.now(),title,content}; upsert(note); if(id){ Object.assign(notes.find(x=>x.id===id)||{},note); } else notes.push(note); document.getElementById('form').reset(); render(); };
+window.onload=load;
+</script>
+</body>
+</html>
