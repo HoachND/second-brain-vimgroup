@@ -46,11 +46,12 @@
 </div>
 <div class="app">
   <aside class="left" id="sidebar">
-    <div class="brand"><div class="dot"></div><div><div class="brand-kicker">Tuệ Mỹ / OpenClaw</div><div class="brand-title">Brain Ops</div><div class="brand-sub">Hệ thống phân tích tri thức lõi</div></div></div>
+    <div class="brand"><div class="dot"></div><div><div class="brand-kicker">VimAI - Second Brain</div><div class="brand-title">Brain Ops</div><div class="brand-sub">Hệ thống phân tích tri thức lõi</div></div></div>
     <div class="topTools"><button class="toolBtn" onclick="toggleComposer()">📝 Note mới</button><button class="toolBtn" onclick="toggleSearch()">🔍 Tra cứu</button><button class="toolBtn" onclick="openBrainQuery()">💬 Terminal</button></div>
     <div id="searchWrap" class="hidden"><input id="search" placeholder="Tìm category / chủ đề..." oninput="renderAll()" /><div class="sp8"></div></div>
     <div class="card" id="composer">
       <select id="categorySelect"><option value="">Chọn category có sẵn...</option></select>
+      <button class="toolBtn" onclick="toggleSidebar()" style="margin-left:8px;padding:4px 8px;border-radius:999px;">☰ Control Panel</button>
       <div class="sp8"></div>
       <input id="category" placeholder="Hoặc nhập category mới" />
       <div class="sp8"></div>
@@ -73,6 +74,7 @@
         <option value="dark">Dark</option>
         <option value="light">Light</option>
       </select>
+      <button class="toolBtn" onclick="toggleSidebar()" style="margin-left:8px;padding:4px 8px;border-radius:999px;">☰ Control Panel</button>
     </div>
 <div id="brainQueryPanel" class="brain-query-panel">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
@@ -84,7 +86,7 @@
   <div class="sp8"></div>
   <div style="display:flex;gap:8px"><button onclick="sendBrainQuery()">Gửi</button><button class="ghostBtn" onclick="clearBrainQueryMemory()">Xóa memory chat</button></div>
 </div>
-    <button class="menuBtn" onclick="toggleSidebar()">☰ Control Panel</button>
+    
     <div class="hero-panel">
       <div class="hero-card">
         <div class="hero-grid">
